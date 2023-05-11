@@ -67,8 +67,8 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
   //It's return a fieldName, fieldType dropdown, and two buttons
   Widget customField(int index,BuildContext context){
 
-   String fieldType = 'Select field type';
    String fieldName = "";
+   String fieldType = 'Select field type';
 
    final field = state.formFields;
 
@@ -79,6 +79,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
 
        children: [
 
+         //Field name
          Row(
            children: [
              Flexible(
@@ -107,6 +108,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
 
          SizedBox(height: 10,),
 
+         // Field type
          Row(
            children: [
              Flexible(
@@ -123,13 +125,14 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
                  padding: const EdgeInsets.all(8.0),
                  child: DropdownButton<String>(
                    value: fieldType,
-                   items: <String>['Select field type','Text Field', 'Time Picker', 'Date Picker', 'DropDown'].map<DropdownMenuItem<String>>((String value) {
+                   items: <String>['Select field type','Text Field', 'Time Picker', 'Date Picker', 'DropDown','Radio button'].map<DropdownMenuItem<String>>((String value) {
                      return DropdownMenuItem<String>(
                        value: value,
                        child: Text(value));}).toList(),
                        onChanged: (String? newValue) {
 
                          fieldType = newValue!;
+
                        },
                  ),
                ),
@@ -139,6 +142,8 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
          ),
 
          SizedBox(height: 10,),
+
+         //Close & save button
 
          Row(
            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -153,17 +158,22 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
 
 
                if(fieldType.contains("Text Field")){
-
                  field.insert(index, getTextField(fieldName));
                }
 
                else if(fieldType.contains("Time Picker")){
                  field.insert(index, getTimePickerField(fieldName,context));
                }
+
                else if(fieldType.contains("Date Picker")){
                  field.insert(index, getDatePickerField(fieldName,context));
                }
+
                else if(fieldType.contains("DropDown")){
+               }
+
+               else if(fieldType.contains("Radio button")){
+                 field.insert(index, getRadioButtonField(fieldName));
                }
 
                field.removeAt(index+1);
@@ -232,6 +242,29 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
       ),
     );
   }
+
+  //It's return radio button field
+  Widget getRadioButtonField(String fieldName) {
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(fieldName),
+          SizedBox(width: 10,),
+          Radio(value: Text("Yes"), onChanged: (value)=>StoreFromData.formInfo.addAll({fieldName:"Yes"}), groupValue: Text("No"),),
+
+          SizedBox(width: 10,),
+          Radio(value: Text("No"), onChanged: (value)=>StoreFromData.formInfo.addAll({fieldName:"No"}), groupValue: null,),
+        ],
+      ),
+    );
+  }
+
+
+  //It's return a two radio button field
 
 
   //It's set date
