@@ -31,9 +31,12 @@ class Form extends StatelessWidget {
 
       body: Center(
           child: ElevatedButton(child: const Text("Form"),onPressed: (){
+
+            //for windows
             if (defaultTargetPlatform == TargetPlatform.windows){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> const AndroidForm()));}
 
+            // for mobile
             else if (defaultTargetPlatform == TargetPlatform.android){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> const AndroidForm()));
             }
