@@ -148,7 +148,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
                field.removeAt(index);
                emit(AndroidFormInitial(formFields: field));
 
-             }, child: Text("Close",style: TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green.shade600)),),
+             }, child: const Text("Close",style: TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green.shade600)),),
              TextButton(onPressed: (){
 
 
@@ -158,19 +158,18 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
                }
 
                else if(fieldType.contains("Time Picker")){
-
+                 field.insert(index, getTimePickerField(fieldName,context));
                }
                else if(fieldType.contains("Date Picker")){
                  field.insert(index, getDatePickerField(fieldName,context));
                }
                else if(fieldType.contains("DropDown")){
-
                }
 
                field.removeAt(index+1);
                emit(AndroidFormInitial(formFields: field));
 
-             }, child: Text("Save",style:TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigoAccent.shade400))),
+             }, child: const Text("Save",style:TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigoAccent.shade400))),
            ],
          ),
        ],
@@ -213,8 +212,26 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
   }
 
 
+  //It's return a time picker field
+  Widget getTimePickerField(String fieldName,BuildContext context) {
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        readOnly: true,
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            hintText: "HH:mm",
+            labelText: "$fieldName*",
+            suffixIcon : IconButton(icon: Icon(Icons.calendar_month,size: 20,),onPressed: ()=> getTime(fieldName,context))
+        ),
+      ),
+    );
+  }
+
+
   //It's set date
-  Future<void> getDate(String fieldName,BuildContext context,) async {
+  void getDate(String fieldName,BuildContext context,) async {
 
     DateTime selectedDate = DateTime.now();
     String date;
@@ -234,6 +251,24 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
       StoreFromData.formInfo.addAll({fieldName:date});
     }
   }
+
+
+  //It's set time picker
+  void getTime(String fieldName, BuildContext context) async {
+
+    TimeOfDay selectedDate = TimeOfDay.now();
+    final TimeOfDay? timePicker = await showTimePicker(
+      context: context,
+      initialTime: selectedDate,
+    );
+
+    if (timePicker != null) {
+
+        String time = timePicker.format(context);
+        // added time
+        StoreFromData.formInfo.addAll({fieldName:time});
+      }
+    }
 
   // return two digit format
   String numberFormat(int num) {
