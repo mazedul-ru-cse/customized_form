@@ -194,12 +194,14 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
     );
   }
 
+  var datePickerController = TextEditingController();
   //It's return a date picker field
   Widget getDatePickerField(String fieldName,BuildContext context) {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
+        controller: datePickerController,
         readOnly: true,
         decoration: InputDecoration(
             border: const OutlineInputBorder(),
@@ -212,18 +214,20 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
   }
 
 
+  var timePickerController = TextEditingController();
   //It's return a time picker field
   Widget getTimePickerField(String fieldName,BuildContext context) {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
+        controller: timePickerController,
         readOnly: true,
         decoration: InputDecoration(
             border: const OutlineInputBorder(),
             hintText: "HH:mm",
             labelText: "$fieldName*",
-            suffixIcon : IconButton(icon: Icon(Icons.calendar_month,size: 20,),onPressed: ()=> getTime(fieldName,context))
+            suffixIcon : IconButton(icon: Icon(Icons.watch_later_outlined,size: 20,),onPressed: ()=> getTime(fieldName,context))
         ),
       ),
     );
@@ -246,6 +250,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
     if (pickedDate != null) {
       date = "${numberFormat(pickedDate.day)}/${numberFormat(
             pickedDate.month)}/${pickedDate.year} ";
+      datePickerController.text = date;
 
       // added date
       StoreFromData.formInfo.addAll({fieldName:date});
@@ -265,6 +270,9 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
     if (timePicker != null) {
 
         String time = timePicker.format(context);
+
+        timePickerController.text = time;
+
         // added time
         StoreFromData.formInfo.addAll({fieldName:time});
       }
