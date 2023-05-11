@@ -1,14 +1,17 @@
+import 'dart:developer';
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:customized_form/store_form_data.dart';
 import 'package:flutter/material.dart';
-
 part 'android_form_state.dart';
 
 
 class Fields {
-  static List<Widget> formFields =
-  [
 
+  static List<Widget> formFields =
+
+  [
     //Student name field
     Padding(
       padding: const EdgeInsets.all(8.0),
@@ -48,21 +51,21 @@ class Fields {
         onChanged: (value) => StoreFromData.formInfo.addAll({"Mother's name":value}),
       ),
     ),
-
-
   ];
 }
 
 class AndroidFormCubit extends Cubit<AndroidFormInitial> {
   AndroidFormCubit() : super(AndroidFormInitial(formFields: Fields.formFields));
 
-  void addNewFriend(int index){
+  //Add a new field in the form
+  void addNewFriend(int index,BuildContext context){
     final field = state.formFields;
-    field.insert(index, customField(index));
+    field.insert(index, customField(index,context));
     emit(AndroidFormInitial(formFields: field));
   }
 
- Widget customField(int index){
+  //It's return a fieldName, fieldType dropdown, and two buttons
+  Widget customField(int index,BuildContext context){
 
    String fieldType = 'Select field type';
    String fieldName = "";
@@ -158,7 +161,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
 
                }
                else if(fieldType.contains("Date Picker")){
-
+                 field.insert(index, getDatePickerField(fieldName,context));
                }
                else if(fieldType.contains("DropDown")){
 
@@ -176,6 +179,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
     );
  }
 
+  //It's return a text edit field
   Widget getTextField(String fieldName) {
 
     return Padding(
@@ -184,12 +188,60 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
         decoration: InputDecoration(
             border: const OutlineInputBorder(),
             hintText: fieldName,
-            labelText: "$fieldName*"
+            labelText: "$fieldName*",
         ),
         onChanged: (value) => StoreFromData.formInfo.addAll({fieldName:value}),
       ),
     );
   }
 
+  //It's return a date picker field
+  Widget getDatePickerField(String fieldName,BuildContext context) {
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        readOnly: true,
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            hintText: "dd/mm/yyyy",
+            labelText: "$fieldName*",
+            suffixIcon : IconButton(icon: Icon(Icons.calendar_month,size: 20,),onPressed: ()=> getDate(fieldName,context))
+        ),
+      ),
+    );
+  }
+
+
+  //It's set date
+  Future<void> getDate(String fieldName,BuildContext context,) async {
+
+    DateTime selectedDate = DateTime.now();
+    String date;
+
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1900, 3),
+        lastDate: DateTime(2101));
+
+
+    if (pickedDate != null) {
+      date = "${numberFormat(pickedDate.day)}/${numberFormat(
+            pickedDate.month)}/${pickedDate.year} ";
+
+      // added date
+      StoreFromData.formInfo.addAll({fieldName:date});
+    }
+  }
+
+  // return two digit format
+  String numberFormat(int num) {
+    if (num <= 9) {
+      return "0$num";
+    } else {
+      return "$num";
+    }
+  }
 
 }

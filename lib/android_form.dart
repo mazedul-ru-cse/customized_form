@@ -49,7 +49,7 @@ class _AndroidFormState extends State<AndroidForm> {
                         // );
 
                         if(index == state.formFields.length){
-                          return ElevatedButton(onPressed: ()=> BlocProvider.of<AndroidFormCubit>(context).addNewFriend(index), child: Text("Add field"));
+                          return ElevatedButton(onPressed: ()=> BlocProvider.of<AndroidFormCubit>(context).addNewFriend(index,context), child: Text("Add field"));
                         }
                         return state.formFields[index];
                       }
