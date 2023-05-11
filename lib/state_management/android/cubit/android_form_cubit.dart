@@ -1,9 +1,11 @@
-import 'dart:developer';
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:customized_form/component/field_type_dropdown.dart';
+import 'package:customized_form/component/radio_button_field.dart';
 import 'package:customized_form/store_form_data.dart';
 import 'package:flutter/material.dart';
+
+import '../../../static_variable.dart';
 part 'android_form_state.dart';
 
 
@@ -16,7 +18,7 @@ class Fields {
     Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           hintText: "Student name",
           labelText: "Student name*"
@@ -30,7 +32,7 @@ class Fields {
     Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             border: OutlineInputBorder(),
             hintText: "Fathers' name",
             labelText: "Fathers' name*"
@@ -43,7 +45,7 @@ class Fields {
     Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             border: OutlineInputBorder(),
             hintText: "Mother's name",
             labelText: "Mother's name*"
@@ -68,12 +70,11 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
   Widget customField(int index,BuildContext context){
 
    String fieldName = "";
-   String fieldType = 'Select field type';
 
    final field = state.formFields;
 
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       elevation: 5,
       child: Column(
 
@@ -82,10 +83,10 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
          //Field name
          Row(
            children: [
-             Flexible(
+             const Flexible(
                flex: 2,
                  child: Padding(
-                   padding: const EdgeInsets.all(5.0),
+                   padding: EdgeInsets.all(5.0),
                    child: Text("Field Name : "),
                  )),
 
@@ -94,7 +95,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
                child: Padding(
                  padding: const EdgeInsets.all(5.0),
                  child: TextField(
-                   decoration: InputDecoration(
+                   decoration: const InputDecoration(
                    ),
                    onChanged: (value){
                      fieldName = value;
@@ -106,42 +107,31 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
            ],
          ),
 
-         SizedBox(height: 10,),
+         const SizedBox(height: 10,),
 
          // Field type
          Row(
            children: [
-             Flexible(
+             const Flexible(
                flex: 2,
                child: Padding(
-                 padding: const EdgeInsets.all(5.0),
+                 padding: EdgeInsets.all(5.0),
                  child: Text("Field Type : "),
                ),
              ),
 
-             Flexible(
+             const Flexible(
                flex: 4,
                child: Padding(
-                 padding: const EdgeInsets.all(8.0),
-                 child: DropdownButton<String>(
-                   value: fieldType,
-                   items: <String>['Select field type','Text Field', 'Time Picker', 'Date Picker', 'DropDown','Radio button'].map<DropdownMenuItem<String>>((String value) {
-                     return DropdownMenuItem<String>(
-                       value: value,
-                       child: Text(value));}).toList(),
-                       onChanged: (String? newValue) {
-
-                         fieldType = newValue!;
-
-                       },
-                 ),
+                 padding: EdgeInsets.all(8.0),
+                 child: FieldTypeDropDown(),
                ),
              ),
 
            ],
          ),
 
-         SizedBox(height: 10,),
+         const SizedBox(height: 10,),
 
          //Close & save button
 
@@ -157,23 +147,23 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
              TextButton(onPressed: (){
 
 
-               if(fieldType.contains("Text Field")){
+               if(StaticVariable.fieldType.contains("Text Field")){
                  field.insert(index, getTextField(fieldName));
                }
 
-               else if(fieldType.contains("Time Picker")){
+               else if(StaticVariable.fieldType.contains("Time Picker")){
                  field.insert(index, getTimePickerField(fieldName,context));
                }
 
-               else if(fieldType.contains("Date Picker")){
+               else if(StaticVariable.fieldType.contains("Date Picker")){
                  field.insert(index, getDatePickerField(fieldName,context));
                }
 
-               else if(fieldType.contains("DropDown")){
+               else if(StaticVariable.fieldType.contains("DropDown")){
                }
 
-               else if(fieldType.contains("Radio button")){
-                 field.insert(index, getRadioButtonField(fieldName));
+               else if(StaticVariable.fieldType.contains("Radio button")){
+                 field.insert(index, RadioButtonField(fieldName: fieldName));
                }
 
                field.removeAt(index+1);
@@ -217,7 +207,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
             border: const OutlineInputBorder(),
             hintText: "dd/mm/yyyy",
             labelText: "$fieldName*",
-            suffixIcon : IconButton(icon: Icon(Icons.calendar_month,size: 20,),onPressed: ()=> getDate(fieldName,context))
+            suffixIcon : IconButton(icon: const Icon(Icons.calendar_month,size: 20,),onPressed: ()=> getDate(fieldName,context))
         ),
       ),
     );
@@ -237,37 +227,12 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
             border: const OutlineInputBorder(),
             hintText: "HH:mm",
             labelText: "$fieldName*",
-            suffixIcon : IconButton(icon: Icon(Icons.watch_later_outlined,size: 20,),onPressed: ()=> getTime(fieldName,context))
+            suffixIcon : IconButton(icon: const Icon(Icons.watch_later_outlined,size: 20,),onPressed: ()=> getTime(fieldName,context))
         ),
       ),
     );
   }
 
-  //It's return radio button field
-  Widget getRadioButtonField(String fieldName) {
-
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(fieldName),
-          SizedBox(width: 10,),
-          Radio(value: Text("Yes"), onChanged: (value)=>StoreFromData.formInfo.addAll({fieldName:"Yes"}), groupValue: Text("No"),),
-
-          SizedBox(width: 10,),
-          Radio(value: Text("No"), onChanged: (value)=>StoreFromData.formInfo.addAll({fieldName:"No"}), groupValue: null,),
-        ],
-      ),
-    );
-  }
-
-
-  //It's return a two radio button field
-
-
-  //It's set date
   void getDate(String fieldName,BuildContext context,) async {
 
     DateTime selectedDate = DateTime.now();
@@ -289,7 +254,6 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
       StoreFromData.formInfo.addAll({fieldName:date});
     }
   }
-
 
   //It's set time picker
   void getTime(String fieldName, BuildContext context) async {
