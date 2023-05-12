@@ -1,9 +1,16 @@
+import 'package:customized_form/static_variable/static_variable.dart';
 import 'package:customized_form/student_information_form.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+/*
+ @auth M A Mazedul Islam
+ Mobile App Developer
+ mazedulislam4970@gmail.com
+ */
+
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +19,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Form()
     );
@@ -26,24 +33,26 @@ class Form extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Customized Form"),
+        title: const Text("Customized Form"),
         centerTitle: true,
       ),
 
-      body: Center(
-          child: ElevatedButton(child: const Text("Form"),onPressed: (){
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                elevation: 5,
+                margin: EdgeInsets.all(10),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(StaticVariable.message,textAlign: TextAlign.justify,style: TextStyle(fontSize: 18),),
+                ),
+              ),
 
-            //for windows
-            if (defaultTargetPlatform == TargetPlatform.windows){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const StudentInformationForm()));}
-
-            // for mobile
-            else if (defaultTargetPlatform == TargetPlatform.android){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const StudentInformationForm()));
-            }
-          }
+              ElevatedButton(child: const Text("Form"),onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>const StudentInformationForm()))),
+            ],
           )
-      )
+
     );
   }
 
