@@ -14,6 +14,7 @@ class FieldTypeDropDown extends StatefulWidget {
 class _FieldTypeDropDownState extends State<FieldTypeDropDown> {
   @override
   Widget build(BuildContext context) {
+
     return DropdownButton<String>(
       value: StaticVariable.fieldType,
       items: <String>['Select field type','Text Field', 'Time Picker', 'Date Picker', 'DropDown','Radio button'].map<DropdownMenuItem<String>>((String value) {

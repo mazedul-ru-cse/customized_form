@@ -40,14 +40,6 @@ class _StudentInformationFormState extends State<StudentInformationForm> {
                   child: ListView.builder(
                       itemCount: state.formFields.length+1,
                       itemBuilder: (context,index){
-                        // return Card(
-                        //   elevation: 3,
-                        //   child: ListTile(
-                        //     leading: Text(index.toString()),
-                        //     title: Text(state.friendsName[index]),
-                        //     trailing: IconButton(icon: Icon(Icons.remove,color: Colors.red,), onPressed: ()=> BlocProvider.of<StudentInformationFormCubit>(context).removeAFriend(index)),
-                        //   ),
-                        // );
 
                         if(index == state.formFields.length){
                           return ElevatedButton(onPressed: ()=> BlocProvider.of<FormCubit>(context).addNewFriend(index,context), child: Text("Add field"));

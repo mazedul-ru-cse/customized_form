@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:customized_form/component/create_dropdown_button.dart';
+import 'package:customized_form/component/dropdown_button_field.dart';
 import 'package:flutter/material.dart';
 
 import '../component/field_type_dropdown.dart';
@@ -64,6 +66,16 @@ class FormCubit extends Cubit<InitialFormState> {
     field.insert(index, customField(index,context));
     emit(InitialFormState(formFields: field));
   }
+
+
+  //Add a new field in the form
+  void addDropdownField(int index,String fieldName, List<String> itemNames){
+    final field = state.formFields;
+    field.removeAt(index);
+    field.insert(index, DropdownButtonField(itemNames: itemNames,fieldName: fieldName, ));
+    emit(InitialFormState(formFields: field));
+  }
+
 
   //It's return a fieldName, fieldType dropdown, and two buttons
   Widget customField(int index,BuildContext context){
@@ -159,6 +171,7 @@ class FormCubit extends Cubit<InitialFormState> {
                 }
 
                 else if(StaticVariable.fieldType.contains("DropDown")){
+                  field.insert(index, CreateDropdownButton(fieldName: fieldName, index: index));
                 }
 
                 else if(StaticVariable.fieldType.contains("Radio button")){
@@ -282,6 +295,9 @@ class FormCubit extends Cubit<InitialFormState> {
       return "$num";
     }
   }
+
+
+
 
 }
 
