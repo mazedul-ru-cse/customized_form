@@ -18,13 +18,18 @@ class _RadioButtonFieldState extends State<RadioButtonField> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Card(
+      margin: EdgeInsets.all(10),
+      borderOnForeground : false,
+      elevation: 3,
       child: Row(
 
         children: [
 
-          Text(widget.fieldName),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(widget.fieldName),
+          ),
 
           Flexible(
             flex: 2,

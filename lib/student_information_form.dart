@@ -31,18 +31,42 @@ class _StudentInformationFormState extends State<StudentInformationForm> {
 
   Widget getFrom(){
     return Column(
+
       children: [
         Expanded(
           child: BlocBuilder<FormCubit,InitialFormState>(
               builder: (context,state){
                 return Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: ListView.builder(
                       itemCount: state.formFields.length+1,
                       itemBuilder: (context,index){
 
                         if(index == state.formFields.length){
-                          return ElevatedButton(onPressed: ()=> BlocProvider.of<FormCubit>(context).addNewFriend(index,context), child: Text("Add field"));
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+
+                              //Add a new field button
+                              Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: ElevatedButton(onPressed: ()=> BlocProvider.of<FormCubit>(context).addNewFriend(BlocProvider.of<FormCubit>(context).getLastIndex(),context), child: Text("Add a new field")),
+                                  )),
+
+
+                              //Submit button
+                              Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: ElevatedButton(onPressed: ()=> printFormInfo(), child: Text("Submit")),
+                                  )),
+                            ],
+                          );
                         }
                         return state.formFields[index];
                       }
@@ -53,7 +77,6 @@ class _StudentInformationFormState extends State<StudentInformationForm> {
         ),
 
         //Submit button
-        ElevatedButton(onPressed: ()=> printFormInfo(), child: Text("Submit"))
 
       ],
     );

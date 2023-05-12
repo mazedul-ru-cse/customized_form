@@ -68,6 +68,10 @@ class FormCubit extends Cubit<InitialFormState> {
   }
 
 
+  int getLastIndex(){
+    return state.formFields.length;
+  }
+
   //Add a new field in the form
   void addDropdownField(int index,String fieldName, List<String> itemNames){
     final field = state.formFields;
