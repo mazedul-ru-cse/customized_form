@@ -1,4 +1,4 @@
-import 'package:customized_form/static_variable.dart';
+import 'package:customized_form/static_variable/static_variable.dart';
 import 'package:flutter/material.dart';
 
 /*

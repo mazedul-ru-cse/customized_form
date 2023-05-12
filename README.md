@@ -9,4 +9,6 @@ It's a flutter project that build customized form like text field, date picker, 
 
 ## Coding Convention
 
--   Method, property, variable, function name should be camelCased.
+- Method, property, variable, function name should be camelCased.
+
+- @Copyright M A Mazedul Islam

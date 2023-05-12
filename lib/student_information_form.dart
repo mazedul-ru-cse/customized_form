@@ -1,16 +1,17 @@
-import 'package:customized_form/state_management/android/cubit/android_form_cubit.dart';
-import 'package:customized_form/store_form_data.dart';
+import 'package:customized_form/cubit/form_cubit.dart';
+import 'package:customized_form/cubit/initial_form_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'static_variable/store_form_data.dart';
 
-class AndroidForm extends StatefulWidget {
-  const AndroidForm({Key? key}) : super(key: key);
+class StudentInformationForm extends StatefulWidget {
+  const StudentInformationForm({Key? key}) : super(key: key);
 
   @override
-  State<AndroidForm> createState() => _AndroidFormState();
+  State<StudentInformationForm> createState() => _StudentInformationFormState();
 }
 
-class _AndroidFormState extends State<AndroidForm> {
+class _StudentInformationFormState extends State<StudentInformationForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +21,7 @@ class _AndroidFormState extends State<AndroidForm> {
       ),
 
       body: BlocProvider(
-        create: (context)=> AndroidFormCubit(),
+        create: (context)=> FormCubit(),
         child: getFrom(),
 
       ),
@@ -32,7 +33,7 @@ class _AndroidFormState extends State<AndroidForm> {
     return Column(
       children: [
         Expanded(
-          child: BlocBuilder<AndroidFormCubit,AndroidFormInitial>(
+          child: BlocBuilder<FormCubit,InitialFormState>(
               builder: (context,state){
                 return Container(
                   margin: EdgeInsets.all(10),
@@ -44,12 +45,12 @@ class _AndroidFormState extends State<AndroidForm> {
                         //   child: ListTile(
                         //     leading: Text(index.toString()),
                         //     title: Text(state.friendsName[index]),
-                        //     trailing: IconButton(icon: Icon(Icons.remove,color: Colors.red,), onPressed: ()=> BlocProvider.of<AndroidFormCubit>(context).removeAFriend(index)),
+                        //     trailing: IconButton(icon: Icon(Icons.remove,color: Colors.red,), onPressed: ()=> BlocProvider.of<StudentInformationFormCubit>(context).removeAFriend(index)),
                         //   ),
                         // );
 
                         if(index == state.formFields.length){
-                          return ElevatedButton(onPressed: ()=> BlocProvider.of<AndroidFormCubit>(context).addNewFriend(index,context), child: Text("Add field"));
+                          return ElevatedButton(onPressed: ()=> BlocProvider.of<FormCubit>(context).addNewFriend(index,context), child: Text("Add field"));
                         }
                         return state.formFields[index];
                       }

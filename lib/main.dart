@@ -1,4 +1,4 @@
-import 'package:customized_form/android_form.dart';
+import 'package:customized_form/student_information_form.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -35,11 +35,11 @@ class Form extends StatelessWidget {
 
             //for windows
             if (defaultTargetPlatform == TargetPlatform.windows){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const AndroidForm()));}
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> const StudentInformationForm()));}
 
             // for mobile
             else if (defaultTargetPlatform == TargetPlatform.android){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const AndroidForm()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> const StudentInformationForm()));
             }
           }
           )

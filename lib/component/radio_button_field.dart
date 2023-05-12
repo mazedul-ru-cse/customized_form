@@ -1,5 +1,6 @@
-import 'package:customized_form/store_form_data.dart';
 import 'package:flutter/material.dart';
+
+import '../static_variable/store_form_data.dart';
 
 //This widget provide the radio button field
 class RadioButtonField extends StatefulWidget {

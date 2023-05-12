@@ -1,12 +1,11 @@
-
 import 'package:bloc/bloc.dart';
-import 'package:customized_form/component/field_type_dropdown.dart';
-import 'package:customized_form/component/radio_button_field.dart';
-import 'package:customized_form/store_form_data.dart';
 import 'package:flutter/material.dart';
 
-import '../../../static_variable.dart';
-part 'android_form_state.dart';
+import '../component/field_type_dropdown.dart';
+import '../component/radio_button_field.dart';
+import '../static_variable/static_variable.dart';
+import '../static_variable/store_form_data.dart';
+import 'initial_form_state.dart';
 
 
 class Fields {
@@ -19,9 +18,9 @@ class Fields {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: "Student name",
-          labelText: "Student name*"
+            border: OutlineInputBorder(),
+            hintText: "Student name",
+            labelText: "Student name*"
         ),
 
         onChanged: (value) => StoreFromData.formInfo.addAll({"Student Name":value}),
@@ -56,127 +55,127 @@ class Fields {
   ];
 }
 
-class AndroidFormCubit extends Cubit<AndroidFormInitial> {
-  AndroidFormCubit() : super(AndroidFormInitial(formFields: Fields.formFields));
+class FormCubit extends Cubit<InitialFormState> {
+  FormCubit() : super(InitialFormState(formFields: Fields.formFields));
 
   //Add a new field in the form
   void addNewFriend(int index,BuildContext context){
     final field = state.formFields;
     field.insert(index, customField(index,context));
-    emit(AndroidFormInitial(formFields: field));
+    emit(InitialFormState(formFields: field));
   }
 
   //It's return a fieldName, fieldType dropdown, and two buttons
   Widget customField(int index,BuildContext context){
 
-   String fieldName = "";
+    String fieldName = "";
 
-   final field = state.formFields;
+    final field = state.formFields;
 
     return Card(
       margin: const EdgeInsets.all(10),
       elevation: 5,
       child: Column(
 
-       children: [
+        children: [
 
-         //Field name
-         Row(
-           children: [
-             const Flexible(
-               flex: 2,
-                 child: Padding(
-                   padding: EdgeInsets.all(5.0),
-                   child: Text("Field Name : "),
-                 )),
+          //Field name
+          Row(
+            children: [
+              const Flexible(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text("Field Name : "),
+                  )),
 
-             Flexible(
-               flex: 4,
-               child: Padding(
-                 padding: const EdgeInsets.all(5.0),
-                 child: TextField(
-                   decoration: const InputDecoration(
-                   ),
-                   onChanged: (value){
-                     fieldName = value;
-                   },
-                 ),
+              Flexible(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                    ),
+                    onChanged: (value){
+                      fieldName = value;
+                    },
+                  ),
 
-               ),
-             ),
-           ],
-         ),
+                ),
+              ),
+            ],
+          ),
 
-         const SizedBox(height: 10,),
+          const SizedBox(height: 10,),
 
-         // Field type
-         Row(
-           children: [
-             const Flexible(
-               flex: 2,
-               child: Padding(
-                 padding: EdgeInsets.all(5.0),
-                 child: Text("Field Type : "),
-               ),
-             ),
+          // Field type
+          Row(
+            children: [
+              const Flexible(
+                flex: 2,
+                child: Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text("Field Type : "),
+                ),
+              ),
 
-             const Flexible(
-               flex: 4,
-               child: Padding(
-                 padding: EdgeInsets.all(8.0),
-                 child: FieldTypeDropDown(),
-               ),
-             ),
+              const Flexible(
+                flex: 4,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: FieldTypeDropDown(),
+                ),
+              ),
 
-           ],
-         ),
+            ],
+          ),
 
-         const SizedBox(height: 10,),
+          const SizedBox(height: 10,),
 
-         //Close & save button
+          //Close & save button
 
-         Row(
-           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-           children: [
-             TextButton(onPressed: (){
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(onPressed: (){
 
-               field.removeAt(index);
-               emit(AndroidFormInitial(formFields: field));
+                field.removeAt(index);
+                emit(InitialFormState(formFields: field));
 
-             }, child: const Text("Close",style: TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green.shade600)),),
-             TextButton(onPressed: (){
+              }, child: const Text("Close",style: TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green.shade600)),),
+              TextButton(onPressed: (){
 
 
-               if(StaticVariable.fieldType.contains("Text Field")){
-                 field.insert(index, getTextField(fieldName));
-               }
+                if(StaticVariable.fieldType.contains("Text Field")){
+                  field.insert(index, getTextField(fieldName));
+                }
 
-               else if(StaticVariable.fieldType.contains("Time Picker")){
-                 field.insert(index, getTimePickerField(fieldName,context));
-               }
+                else if(StaticVariable.fieldType.contains("Time Picker")){
+                  field.insert(index, getTimePickerField(fieldName,context));
+                }
 
-               else if(StaticVariable.fieldType.contains("Date Picker")){
-                 field.insert(index, getDatePickerField(fieldName,context));
-               }
+                else if(StaticVariable.fieldType.contains("Date Picker")){
+                  field.insert(index, getDatePickerField(fieldName,context));
+                }
 
-               else if(StaticVariable.fieldType.contains("DropDown")){
-               }
+                else if(StaticVariable.fieldType.contains("DropDown")){
+                }
 
-               else if(StaticVariable.fieldType.contains("Radio button")){
-                 field.insert(index, RadioButtonField(fieldName: fieldName));
-               }
+                else if(StaticVariable.fieldType.contains("Radio button")){
+                  field.insert(index, RadioButtonField(fieldName: fieldName));
+                }
 
-               field.removeAt(index+1);
-               emit(AndroidFormInitial(formFields: field));
+                field.removeAt(index+1);
+                emit(InitialFormState(formFields: field));
 
-             }, child: const Text("Save",style:TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigoAccent.shade400))),
-           ],
-         ),
-       ],
+              }, child: const Text("Save",style:TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigoAccent.shade400))),
+            ],
+          ),
+        ],
 
       ),
     );
- }
+  }
 
   //It's return a text edit field
   Widget getTextField(String fieldName) {
@@ -185,9 +184,9 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            hintText: fieldName,
-            labelText: "$fieldName*",
+          border: const OutlineInputBorder(),
+          hintText: fieldName,
+          labelText: "$fieldName*",
         ),
         onChanged: (value) => StoreFromData.formInfo.addAll({fieldName:value}),
       ),
@@ -247,7 +246,7 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
 
     if (pickedDate != null) {
       date = "${numberFormat(pickedDate.day)}/${numberFormat(
-            pickedDate.month)}/${pickedDate.year} ";
+          pickedDate.month)}/${pickedDate.year} ";
       datePickerController.text = date;
 
       // added date
@@ -266,14 +265,14 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
 
     if (timePicker != null) {
 
-        String time = timePicker.format(context);
+      String time = timePicker.format(context);
 
-        timePickerController.text = time;
+      timePickerController.text = time;
 
-        // added time
-        StoreFromData.formInfo.addAll({fieldName:time});
-      }
+      // added time
+      StoreFromData.formInfo.addAll({fieldName:time});
     }
+  }
 
   // return two digit format
   String numberFormat(int num) {
@@ -285,3 +284,4 @@ class AndroidFormCubit extends Cubit<AndroidFormInitial> {
   }
 
 }
+
