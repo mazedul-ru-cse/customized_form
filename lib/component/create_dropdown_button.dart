@@ -18,35 +18,58 @@ class _CreateDropdownButtonState extends State<CreateDropdownButton> {
   List<String> dropdownItems = [];
   bool isDropdownCreated = false;
 
+  var numOfItemController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    numOfItemController.text = "3";
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return isDropdownCreated ? generateItems() : Row(
+    return isDropdownCreated ? generateItems() :
 
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+    Card(
+      elevation: 6,
+      child: Column(
 
-          Flexible(
-            flex: 5,
-            child: TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Please enter number of items",
-                labelText: "eg. 2,4 etc",
-              ),
+        crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text("Number of dropdown items :"),
+                ),
+                Flexible(
+                  flex: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      controller: numOfItemController,
+                      decoration: const InputDecoration(
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Flexible(
-            flex: 2,
-            child: IconButton(icon: Icon(Icons.add), onPressed: (){
-              setState(() {
-                isDropdownCreated = true;
-              });
-            },
+
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(child: const Text("Add"),onPressed: ()=>setState(()=>isDropdownCreated = true),),
             ),
-          )
-        ],
-      );
+
+            const SizedBox(height: 10,)
+          ],
+
+        ),
+    );
     }
 
   Widget generateItems() {
@@ -61,7 +84,7 @@ class _CreateDropdownButtonState extends State<CreateDropdownButton> {
         children: [
           ListView.builder(
               primary : false,
-              itemCount: 4,
+              itemCount: int.parse(numOfItemController.text.trim()),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index){
@@ -76,7 +99,7 @@ class _CreateDropdownButtonState extends State<CreateDropdownButton> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: "Enter item value",
                           ),
@@ -99,7 +122,7 @@ class _CreateDropdownButtonState extends State<CreateDropdownButton> {
               //Added dropdown item value
               BlocProvider.of<FormCubit>(context).addDropdownField(widget.index,widget.fieldName,item.values.toList());
 
-              }, child: Text("Build")),
+              }, child: const Text("Build")),
           )
         ],
       ),
