@@ -37,22 +37,25 @@ class Form extends StatelessWidget {
         centerTitle: true,
       ),
 
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  elevation: 5,
-                  margin: EdgeInsets.all(10),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(StaticVariable.message,textAlign: TextAlign.justify,style: TextStyle(fontSize: 18),),
+      body: Container(
+        height: MediaQuery.of(context).size.width,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Card(
+                    elevation: 5,
+                    margin: EdgeInsets.all(10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(StaticVariable.message,textAlign: TextAlign.justify,style: TextStyle(fontSize: 18),),
+                    ),
                   ),
-                ),
 
-                ElevatedButton(child: const Text("Form"),onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> const StudentInformationForm()))),
-              ],
-            ),
+                  ElevatedButton(child: const Text("Form"),onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> const StudentInformationForm()))),
+                ],
+              ),
+        ),
       )
 
     );

@@ -188,6 +188,7 @@ class FormCubit extends Cubit<InitialFormState> {
               }, child: const Text("Save",style:TextStyle(color: Colors.white)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigoAccent.shade400))),
             ],
           ),
+          SizedBox(height: 15,)
         ],
 
       ),
